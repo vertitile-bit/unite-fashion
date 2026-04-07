@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNITE — Premium Fashion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  
+  <style>
+    .hero-bg {
+      background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://picsum.photos/id/1015/2000/1200');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .product-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+    }
+    
+    .category-card {
+      transition: all 0.3s ease;
+    }
+    
+    .category-card:hover {
+      transform: scale(1.03);
+    }
+    
+    .modal {
+      animation: fadeInScale 0.3s ease forwards;
+    }
+    
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans">
+
+  <!-- NAVBAR -->
+  <nav class="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-10">
+          <h1 class="text-3xl font-bold tracking-tighter text-teal-600">UNITE</h1>
+          
+          <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="#" onclick="filterByCategory('Men')" class="hover:text-teal-600 transition">Men</a>
+            <a href="#" onclick="filterByCategory('Women')" class="hover:text-teal-600 transition">Women</a>
+            <a href="#" onclick="filterByCategory('Kids')" class="hover:text-teal-600 transition">Kids</a>
+            <a href="#" onclick="filterByCategory('Footwear')" class="hover:text-teal-600 transition">Footwear</a>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="flex-1 max-w-xl mx-8">
+          <div class="relative">
+            <input type="text" id="searchInput" 
+                   class="w-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full py-3 px-5 pl-12 focus:outline-none focus:border-teal-500 transition"
+                   placeholder="Search premium fashion...">
+            <i class="fa-solid fa-magnifying-glass absolute left-5 top-3.5 text-gray-400"></i>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <button onclick="toggleDarkMode()" class="text-xl hover:text-teal-600 transition">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button onclick="toggleWishlist()" class="text-xl hover:text-teal-600 transition">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+          <button onclick="toggleCart()" class="relative text-xl hover:text-teal-600 transition">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="cartCount" class="absolute -top-1 -right-1 bg-teal-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">0</span>
+          </button>
+          <button onclick="toggleLoginModal()" class="text-xl hover:text-teal-600 transition">
+            <i class="fa-solid fa-user"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <div class="hero-bg h-[620px] flex items-center text-white">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">New Season.<br>New You.</h2>
+      <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">Premium fashion that unites style, comfort, and confidence.</p>
+      <button onclick="document.getElementById('products-section').scrollIntoView({behavior:'smooth'})"
+              class="bg-white text-black px-12 py-4 rounded-full font-semibold text-lg hover:bg-teal-600 hover:text-white transition-all duration-300">
+        Shop Now
+      </button>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <h2 class="text-3xl font-bold mb-10 text-center">Shop by Category</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div onclick="filterByCategory('Men')" class="category-card bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm cursor-pointer">
+        <img src="https://picsum.photos/id/201/600/400" class="w-full h-64 object-cover">
+        <div class="p-6 text-center font-semibold text-lg">Men</div>
+      </div>
+      <div onclick="filterByCategory('Women')" class="category-card bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm cursor-pointer">
+        <img src="https://picsum.photos/id/1005/600/400" class="w-full h-64 object-cover">
+        <div class="p-6 text-center font-semibold text-lg">Women</div>
+      </div>
+      <div onclick="filterByCategory('Kids')" class="category-card bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm cursor-pointer">
+        <img src="https://picsum.photos/id/866/600/400" class="w-full h-64 object-cover">
+        <div class="p-6 text-center font-semibold text-lg">Kids</div>
+      </div>
+      <div onclick="filterByCategory('Footwear')" class="category-card bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-sm cursor-pointer">
+        <img src="https://picsum.photos/id/133/600/400" class="w-full h-64 object-cover">
+        <div class="p-6 text-center font-semibold text-lg">Footwear</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS SECTION -->
+  <div id="products-section" class="max-w-7xl mx-auto px-6 py-12 bg-white dark:bg-gray-900">
+    <div class="flex justify-between items-center mb-10">
+      <h2 class="text-3xl font-bold">Trending This Season</h2>
+      <select id="sortSelect" onchange="sortProducts()" 
+              class="border dark:bg-gray-800 dark:border-gray-700 rounded-2xl px-5 py-3 focus:outline-none">
+        <option value="default">Sort by</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+      </select>
+    </div>
+
+    <div id="productsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <!-- Populated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div id="productModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4">
+    <div class="bg-white dark:bg-gray-900 max-w-5xl w-full rounded-3xl overflow-hidden modal">
+      <div class="flex flex-col md:flex-row" id="modalContent">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div id="cartDrawer" class="hidden fixed right-0 top-0 h-full w-full md:w-[420px] bg-white dark:bg-gray-900 shadow-2xl z-[200] transform translate-x-full transition-transform duration-300">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-3xl font-bold">Your Cart</h3>
+        <button onclick="toggleCart()" class="text-3xl hover:text-red-500 transition">✕</button>
+      </div>
+      
+      <div id="cartItems" class="space-y-8 max-h-[60vh] overflow-auto pr-2"></div>
+      
+      <div class="border-t dark:border-gray-700 pt-8 mt-8">
+        <div class="flex justify-between text-2xl font-semibold mb-8">
+          <span>Total</span>
+          <span id="cartTotal">₹0</span>
+        </div>
+        <button onclick="proceedToCheckout()" 
+                class="w-full bg-teal-600 hover:bg-teal-700 text-white py-5 rounded-3xl font-semibold text-lg transition">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ================== PRODUCTS DATA (Expanded) ==================
+    let products = [
+      { id:1, name:"Oversized Oxford Shirt", category:"Men", price:1299, original:1899, discount:32, img:"https://picsum.photos/id/201/600/800", sizes:["S","M","L","XL"] },
+      { id:2, name:"High-Waist Wide Leg Jeans", category:"Women", price:1599, original:2299, discount:30, img:"https://picsum.photos/id/1005/600/800", sizes:["26","28","30","32"] },
+      { id:3, name:"Ultra Boost Premium Sneakers", category:"Footwear", price:2499, original:3499, discount:29, img:"https://picsum.photos/id/866/600/800", sizes:["7","8","9","10"] },
+      { id:4, name:"Kids Graphic Hoodie", category:"Kids", price:899, original:1299, discount:31, img:"https://picsum.photos/id/870/600/800", sizes:["4-5Y","6-7Y","8-9Y"] },
+      { id:5, name:"Linen Casual Shirt", category:"Men", price:1099, original:1599, discount:31, img:"https://picsum.photos/id/180/600/800", sizes:["M","L","XL"] },
+      { id:6, name:"Denim Trucker Jacket", category:"Women", price:2199, original:2999, discount:27, img:"https://picsum.photos/id/251/600/800", sizes:["S","M","L"] },
+      { id:7, name:"Leather Chelsea Boots", category:"Footwear", price:2899, original:3999, discount:28, img:"https://picsum.photos/id/133/600/800", sizes:["6","7","8","9"] },
+      { id:8, name:"Relaxed Cargo Pants", category:"Men", price:1399, original:1999, discount:30, img:"https://picsum.photos/id/201/600/800", sizes:["S","M","L"] },
+      { id:9, name:"Ribbed Knit Sweater", category:"Women", price:1799, original:2499, discount:28, img:"https://picsum.photos/id/1005/600/800", sizes:["S","M","L"] },
+      { id:10, name:"Classic White Sneakers", category:"Footwear", price:1899, original:2599, discount:27, img:"https://picsum.photos/id/866/600/800", sizes:["7","8","9"] },
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Render Products
+    function renderProducts(filteredProducts) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
+
+      filteredProducts.forEach(product => {
+        const discountHTML = product.discount ? 
+          `<span class="absolute top-4 left-4 bg-red-500 text-white text-xs px-4 py-1 rounded-full font-medium">${product.discount}% OFF</span>` : '';
+
+        grid.innerHTML += `
+          <div class="product-card bg-white dark:bg-gray-900 rounded-3xl overflow-hidden cursor-pointer" onclick="showProduct(${product.id})">
+            <div class="relative">
+              <img src="${product.img}" class="w-full h-96 object-cover">
+              ${discountHTML}
+            </div>
+            <div class="p-6">
+              <p class="text-sm text-teal-600 font-medium">${product.category}</p>
+              <h3 class="font-semibold text-lg mt-1 leading-tight">${product.name}</h3>
+              <div class="flex items-baseline gap-3 mt-4">
+                <span class="text-2xl font-bold">₹${product.price}</span>
+                <span class="text-gray-400 line-through text-sm">₹${product.original}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Show Product Modal
+    function showProduct(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+
+      document.getElementById('modalContent').innerHTML = `
+        <div class="md:w-1/2">
+          <img src="${product.img}" class="w-full h-full object-cover">
+        </div>
+        <div class="md:w-1/2 p-8 md:p-12">
+          <button onclick="closeModal()" class="float-right text-3xl text-gray-400 hover:text-gray-600">✕</button>
+          <h2 class="text-3xl font-bold">${product.name}</h2>
+          <p class="text-teal-600 mt-2">${product.category}</p>
+          
+          <div class="flex items-center gap-4 mt-8">
+            <span class="text-4xl font-bold">₹${product.price}</span>
+            <span class="text-gray-400 line-through text-2xl">₹${product.original}</span>
+          </div>
+
+          <div class="mt-10">
+            <p class="font-medium mb-3">Available Sizes</p>
+            <div class="flex gap-3">
+              \( {product.sizes.map(size => `<span class="px-6 py-3 border dark:border-gray-700 rounded-2xl text-sm font-medium hover:border-teal-600 cursor-pointer"> \){size}</span>`).join('')}
+            </div>
+          </div>
+
+          <button onclick="addToCart(${product.id}); closeModal()" 
+                  class="mt-12 w-full bg-teal-600 hover:bg-teal-700 text-white py-5 rounded-3xl font-semibold text-lg transition">
+            Add to Cart
+          </button>
+        </div>
+      `;
+
+      document.getElementById('productModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').classList.add('hidden');
+    }
+
+    // Add to Cart
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      const existing = cart.find(item => item.id === id);
+
+      if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      
+      // Nice feedback
+      const toast = document.createElement('div');
+      toast.className = "fixed bottom-8 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-8 py-4 rounded-2xl shadow-xl z-[300]";
+      toast.textContent = `${product.name} added to cart`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      document.getElementById('cartCount').textContent = count;
+    }
+
+    // Cart Functions
+    function toggleCart() {
+      const drawer = document.getElementById('cartDrawer');
+      drawer.classList.toggle('hidden');
+      if (!drawer.classList.contains('hidden')) renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      let total = 0;
+      container.innerHTML = '';
+
+      if (cart.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-400 py-12">Your cart is empty</p>`;
+        document.getElementById('cartTotal').textContent = `₹0`;
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        total += item.price * (item.quantity || 1);
+        container.innerHTML += `
+          <div class="flex gap-5">
+            <img src="${item.img}" class="w-24 h-24 object-cover rounded-2xl">
+            <div class="flex-1">
+              <h4 class="font-medium leading-tight">${item.name}</h4>
+              <p class="text-teal-600 mt-1">₹${item.price}</p>
+              <div class="flex items-center gap-4 mt-4">
+                <button onclick="changeQuantity(${index}, -1)" class="w-8 h-8 border rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800">-</button>
+                <span class="font-medium">${item.quantity || 1}</span>
+                <button onclick="changeQuantity(${index}, 1)" class="w-8 h-8 border rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800">+</button>
+              </div>
+            </div>
+            <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-600 text-xl">✕</button>
+          </div>
+        `;
+      });
+
+      document.getElementById('cartTotal').textContent = `₹${total}`;
+    }
+
+    function changeQuantity(index, change) {
+      cart[index].quantity = (cart[index].quantity || 1) + change;
+      if (cart[index].quantity < 1) cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+      updateCartCount();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+      updateCartCount();
+    }
+
+    function proceedToCheckout() {
+      if (cart.length === 0) return alert("Your cart is empty!");
+      
+      alert("🎉 Thank you for shopping at UNITE!\n\nThis is a demo website.\nIn production, Razorpay / Stripe integration would be here.");
+      
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      toggleCart();
+      updateCartCount();
+    }
+
+    // Filter & Sort
+    function filterByCategory(cat) {
+      const filtered = products.filter(p => p.category === cat);
+      renderProducts(filtered);
+      document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function sortProducts() {
+      const value = document.getElementById('sortSelect').value;
+      let sorted = [...products];
+
+      if (value === 'low') sorted.sort((a, b) => a.price - b.price);
+      if (value === 'high') sorted.sort((a, b) => b.price - a.price);
+
+      renderProducts(sorted);
+    }
+
+    // Dark Mode
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    // Placeholder functions
+    function toggleWishlist() {
+      alert("❤️ Wishlist feature coming soon!");
+    }
+
+    function toggleLoginModal() {
+      alert("🔑 Login / Sign up modal would appear here.\nYou can integrate Firebase Auth.");
+    }
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      if (!term) {
+        renderProducts(products);
+        return;
+      }
+      const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(term) || 
+        p.category.toLowerCase().includes(term)
+      );
+      renderProducts(filtered);
+    });
+
+    // Initialize
+    renderProducts(products);
+    updateCartCount();
+  </script>
+</body>
+</html>
